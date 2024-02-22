@@ -6,7 +6,7 @@
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 13:49:29 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/20 00:44:58 by taelkhal         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:20:09 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 
 #include <iostream>
 #include <stack>
-#include <fstream>
-#include <string>
-#include <algorithm>
-#include <sstream>
 
 class RPN
 {

@@ -6,7 +6,7 @@
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/19 14:25:20 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/20 01:52:39 by taelkhal         ###   ########.fr       */
+/*   Updated: 2024/02/20 15:10:38 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,12 @@ RPN::RPN(){}
 
 RPN::RPN(const RPN &other)
 {
-    (void)other;
+    rpn = other.rpn;
 }
 
 RPN &RPN::operator=(const RPN &other)
 {
-    (void)other;
+    rpn = other.rpn;
     return *this;
 }
 
@@ -52,7 +52,7 @@ void RPN::run_rpn(std::string str)
             }
             if (s[i] == '*')
             {
-                if(rpn.size() == 2  || rpn.size() == 3)
+                if(rpn.size() > 1)
                 {
                     nb2 = rpn.top();
                     rpn.pop();
@@ -68,7 +68,7 @@ void RPN::run_rpn(std::string str)
             }
             if (s[i] == '-')
             {
-                if (rpn.size() == 2 || rpn.size() == 3)
+                if (rpn.size() > 1)
                 {
                     nb2 = rpn.top();
                     rpn.pop();
@@ -89,7 +89,7 @@ void RPN::run_rpn(std::string str)
             }
             if (s[i] == '+')
             {
-                if (rpn.size() == 2 || rpn.size() == 3)
+                if (rpn.size() > 1)
                 {
                     nb2 = rpn.top();
                     rpn.pop();
@@ -105,12 +105,12 @@ void RPN::run_rpn(std::string str)
             }
             if(s[i] == '/')
             {
-                if (rpn.size() == 2 || rpn.size() == 3)
+                if (rpn.size() > 1)
                 {
                     nb2 = rpn.top();
                     rpn.pop();
                     nb3 = rpn.top();
-                    if (nb3 == 0)
+                    if (nb2 == 0)
                     {
                         std::cout << "Error: divide by zero" << std::endl;
                         exit (0);

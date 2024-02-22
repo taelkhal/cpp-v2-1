@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 02:05:34 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/20 02:05:34 by taelkhal         ###   ########.fr       */
+/*   Created: 2024/02/22 16:23:40 by taelkhal          #+#    #+#             */
+/*   Updated: 2024/02/22 16:36:58 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@ PmergeMe::PmergeMe()
 
 }
 
-PmergeMe::~PmergeMe(){}
-
-void PmergeMe::run_pmergeme(std::string str)
+PmergeMe::PmergeMe(const PmergeMe &other)
 {
-    
+    (void)other;
 }
+
+PmergeMe &PmergeMe::operator=(const PmergeMe &other)
+{
+    (void)other;
+    return *this;
+}
+PmergeMe::~PmergeMe(){}

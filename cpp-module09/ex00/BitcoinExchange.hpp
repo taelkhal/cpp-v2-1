@@ -6,7 +6,7 @@
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 15:31:28 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/16 18:42:23 by taelkhal         ###   ########.fr       */
+/*   Updated: 2024/02/20 17:10:07 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@
 class BitcoinExchange
 {
     private:
-        std::string date;
-        std::string pipe;
         std::map<std::string, float> data;
     public:
         BitcoinExchange();
+        BitcoinExchange(const BitcoinExchange &other);
+        BitcoinExchange &operator=(const BitcoinExchange &other);
         ~BitcoinExchange();
         void parse_file(std::string file);
         void get_value(std::string date, float p);

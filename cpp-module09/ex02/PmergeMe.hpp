@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/20 02:00:28 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/20 02:00:28 by taelkhal         ###   ########.fr       */
+/*   Created: 2024/02/22 16:22:31 by taelkhal          #+#    #+#             */
+/*   Updated: 2024/02/22 16:35:42 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,10 @@ class PmergeMe
         std::deque<unsigned int> arr_d;
     public:
         PmergeMe();
+        PmergeMe(const PmergeMe &other);
+        PmergeMe &operator=(const PmergeMe &other);
         ~PmergeMe();
-        void run_pmergeme(std::string str);
+        
 };
 
 

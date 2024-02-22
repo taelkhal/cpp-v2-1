@@ -6,7 +6,7 @@
 /*   By: taelkhal <taelkhal@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:02:38 by taelkhal          #+#    #+#             */
-/*   Updated: 2024/02/17 16:29:41 by taelkhal         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:29:58 by taelkhal         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,16 @@ BitcoinExchange::BitcoinExchange()
     }
     else
         throw std::runtime_error("Error: could not open file.");
+}
+BitcoinExchange::BitcoinExchange(const BitcoinExchange &other)
+{
+    data = other.data;
+}
+
+BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other)
+{
+    data = other.data;
+    return *this;
 }
 BitcoinExchange::~BitcoinExchange(){}
 
@@ -97,7 +107,7 @@ void BitcoinExchange::get_value(std::string key, float p)
     if (it != data.end())
     {
         float value = it->second;
-        std::cout <<  key << " => " << p << " = " << std::fixed << std::setprecision(2) << value * p << std::endl;
+        std::cout <<  key << " => " << p << " = " << value * p << std::endl;
     }
     else
     {
@@ -106,16 +116,50 @@ void BitcoinExchange::get_value(std::string key, float p)
         {
             --it;
             float c_value = it->second;
-            std::cout << key << " => " << p << " = " << std::fixed << std::setprecision(2) << c_value * p <<  std::endl;
+            std::cout << key << " => " << p << " = " << c_value * p <<  std::endl;
         }
     }
+}
+
+bool contains_only_valid_characters(std::string str)
+{
+    for (size_t i = 0; i < str.size(); ++i)
+    {
+        char ch = str[i];
+        if (!(ch >= '0' && ch <= '9') && ch != '.')
+            return false;
+    }
+    return true;
 }
 
 void BitcoinExchange::check_price(std::string date, std::string key)
 {
     std::string price;
 
+    for (size_t i = 0; i < date.size(); i++)
+    {
+        if(date[i] == '|' && !date[i + 1])
+        {
+            std::cout << "Error: invalid number." << std::endl;
+            return ;
+        }
+    }
     price = date.substr(13, date.length());
+    if (price[0] == '.')
+    {
+        std::cout << "Error: bad input " << date << std::endl;
+        return ;
+    }
+    if (!contains_only_valid_characters(price))
+    {
+        std::cout << "Error: bad input " << date << std::endl;
+        return ;
+    }
+    if (price.empty())
+    {
+        std::cout << "Error: bad input " << date << std::endl;
+        return ;
+    }
     for (size_t i = 0; i < price.length(); i++)
     {
         if (price[i] == ' ' || price[i] == '\t')
@@ -142,13 +186,26 @@ void BitcoinExchange::check_price(std::string date, std::string key)
 
 void BitcoinExchange::check_date(std::string date)
 {
-    std::string year;
-    std::string month;
-    std::string day;
-    int y;
-    int m;
-    int d;
+    std::string year, month, day;
+    int y, m, d;
 
+    int dashCount = 0;
+    for (size_t j = 0; j < date.size(); j++)
+    {
+        size_t pipe = date.find('|');
+        if (j != pipe)
+        {
+            if (date[j] == '-')
+                dashCount++;
+        }
+        else
+            break;
+    }
+    if (dashCount != 2 || date[4] != '-' || date[7] != '-')
+    {
+        std::cout << "Error: bad input => " << date << std::endl;
+        return;
+    }
     year = date.substr(0, 4);
     month = date.substr(5, 7);
     day = date.substr(8, 10);
@@ -156,6 +213,11 @@ void BitcoinExchange::check_date(std::string date)
     m = stoi(month);
     d = stoi(day);
 
+    if ((y == 2009 && m == 1 && d == 1) || (y == 2022 && m > 4 && d > 1))
+    {
+        std::cout << "Error: bad input => " << date << std::endl;
+        return ;
+    }
     if (y < 2009 || y > 2022 || m < 1 || m > 12 || d < 1 || d > 31)
     {
         std::cout << "Error: bad input => " << date << std::endl;
@@ -198,6 +260,7 @@ void BitcoinExchange::parse_file(std::string file)
 {
     std::ifstream input_f(file);
     std::string line;
+    int check = 0;
 
     if (input_f.is_open())
     {
@@ -212,11 +275,14 @@ void BitcoinExchange::parse_file(std::string file)
         date_i = skip_spaces_from_last(date_i);
         if (date_i != "date | value")
             std::cout << "Error: bad input" << std::endl;
+        else
+            check = 1;
         while (std::getline(input_f, date_i))
         {
-            if (date_i.empty())
-                std::cout << "Error: bad input(empty line)" << std::endl;
+            // if (date_i.empty())
+            //     std::cout << "Error: bad input(empty line)" << std::endl;
             date_i = skip_spaces(date_i);
+            date_i = skip_spaces_from_last(date_i);
             check_date(date_i);
         }
     }
